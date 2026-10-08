@@ -1,0 +1,575 @@
+:root {
+  --bg: #f5efe6;
+  --bg-alt: #efe6da;
+  --card: #fffcf7;
+  --ink: #2b211b;
+  --muted: #74665b;
+  --line: #e9dfd2;
+  --accent: #b0522c;
+  --accent-soft: #f6e6da;
+  --green: #2f7d55;
+  --green-soft: #e3efe6;
+  --amber: #b07316;
+  --amber-soft: #f8ecd2;
+  --blue: #1f86c7;
+  --blue-soft: #e2f1fa;
+  --glow-a: #f3d2bd;
+  --glow-b: #f2e1a8;
+  --shadow: rgba(80, 45, 20, 0.18);
+  color-scheme: light;
+}
+/* Tungi rejim: tugma orqali tanlanganda yoki JS ishlamasa — qurilma sozlamasiga ko'ra */
+:root[data-theme="dark"] {
+  --bg: #17130f;
+  --bg-alt: #1c1712;
+  --card: #211b16;
+  --ink: #f1e9df;
+  --muted: #ab9d90;
+  --line: #362d25;
+  --accent: #e4895f;
+  --accent-soft: #3a2619;
+  --green: #6cc497;
+  --green-soft: #1d2e24;
+  --amber: #e9b45a;
+  --amber-soft: #3a2e17;
+  --blue: #5cb8ec;
+  --blue-soft: #16293a;
+  --glow-a: #4a2a1a;
+  --glow-b: #4a3d1c;
+  --shadow: rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #17130f;
+    --bg-alt: #1c1712;
+    --card: #211b16;
+    --ink: #f1e9df;
+    --muted: #ab9d90;
+    --line: #362d25;
+    --accent: #e4895f;
+    --accent-soft: #3a2619;
+    --green: #6cc497;
+    --green-soft: #1d2e24;
+    --amber: #e9b45a;
+    --amber-soft: #3a2e17;
+    --blue: #5cb8ec;
+    --blue-soft: #16293a;
+    --glow-a: #4a2a1a;
+    --glow-b: #4a3d1c;
+    --shadow: rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* Nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-size: 15px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-right { display: flex; align-items: center; gap: 28px; }
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.theme-toggle:hover { background: var(--accent-soft); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .icon-sun { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+/* Hero */
+.hero { padding: 72px 0 112px; overflow-x: clip; }
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.6vw, 64px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin-bottom: 28px;
+}
+.hero h1 .hl { color: var(--accent); }
+
+.lead {
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.socials { display: flex; flex-wrap: wrap; gap: 12px; }
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 22px 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.social:hover { background: var(--accent-soft); }
+.social svg { width: 24px; height: 24px; }
+
+/* Rasm va suzuvchi kartalar */
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin-left: auto;
+  padding: 32px 32px 0 0;
+}
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 32px;
+  left: 32px;
+  border-radius: 40px;
+  background: linear-gradient(120deg, var(--glow-a), var(--glow-b));
+}
+.photo-frame {
+  position: relative;
+  padding: 10px;
+  border-radius: 36px;
+  background: var(--card);
+  box-shadow: 0 30px 60px -24px var(--shadow);
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--accent-soft);
+}
+.photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.photo-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 72px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px 12px 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 16px 36px -12px var(--shadow);
+  white-space: nowrap;
+}
+.float strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.float div span { font-size: 13px; color: var(--muted); }
+.float .icon-tile { width: 44px; height: 44px; margin: 0; }
+
+/* Kartalarning sekin "suzish" animatsiyasi */
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float { animation: float-bob 4s ease-in-out infinite; }
+.float-right { animation-duration: 4.6s; animation-delay: -1.5s; }
+.float-bottom { animation-duration: 5.2s; animation-delay: -3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .float { animation: none; }
+}
+
+.float-top { top: 64px; left: -48px; }
+.float-top strong { color: var(--amber); }
+.float-right { top: 62%; right: -16px; }
+.float-right strong { color: var(--green); }
+.float-bottom { bottom: -32px; left: 24px; }
+.float-bottom strong { font-size: 16px; font-weight: 600; letter-spacing: 0; }
+
+/* Ikonka plitkasi (kartalar, suzuvchi kartalar, aloqa) */
+.icon-tile {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+.icon-tile svg { width: 24px; height: 24px; }
+.tint-accent { background: var(--accent-soft); color: var(--accent); }
+.tint-green { background: var(--green-soft); color: var(--green); }
+.tint-amber { background: var(--amber-soft); color: var(--amber); }
+.tint-blue { background: var(--blue-soft); color: var(--blue); }
+.tint-ink { background: var(--ink); color: var(--bg); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.15s, background 0.15s;
+}
+.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.btn-primary { background: var(--accent); color: var(--card); }
+.btn-primary:hover { opacity: 0.9; }
+.btn-lg {
+  padding: 18px 30px;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.btn-primary.btn-lg { box-shadow: 0 14px 28px -12px var(--accent); }
+.btn-outline { border: 1px solid var(--line); background: var(--card); }
+.btn-outline:hover { background: var(--accent-soft); }
+
+.btn:focus-visible,
+.social:focus-visible,
+.contact-item:focus-visible,
+.theme-toggle:focus-visible,
+.nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Sections */
+.section { padding: 112px 0; overflow-x: clip; }
+.section-alt { background: var(--bg-alt); }
+
+.section-head {
+  max-width: 680px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+.section h2 {
+  font-size: clamp(30px, 4.5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.grid { display: grid; gap: 24px; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* Kartalar */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 36px 32px;
+}
+.card h3 { font-size: 21px; margin-bottom: 10px; }
+.card p { font-size: 16px; color: var(--muted); }
+
+.card-lg { padding: 48px 44px; border-radius: 28px; }
+.card-lg h3 { font-size: 26px; margin-bottom: 12px; }
+.card-lg > p { font-size: 17px; }
+
+.checklist {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+.checklist li {
+  position: relative;
+  padding-left: 34px;
+  font-size: 17px;
+}
+.checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green-soft);
+}
+.checklist li::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 6px;
+  height: 10px;
+  border: solid var(--green);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Aloqa */
+.contact-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 56px;
+  align-items: center;
+  padding: 64px;
+  border: 1px solid var(--line);
+  border-radius: 36px;
+  background: var(--card);
+  box-shadow: 0 40px 80px -48px var(--shadow);
+  overflow: hidden;
+}
+.contact-card::before {
+  content: "";
+  position: absolute;
+  top: -160px;
+  left: -160px;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow-a), transparent 70%);
+  opacity: 0.8;
+}
+.contact-intro,
+.contact-list { position: relative; }
+.contact-intro .section-sub { margin-bottom: 36px; }
+
+.contact-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px 14px 14px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--bg);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.contact-item:hover { border-color: var(--accent); transform: translateX(4px); }
+.contact-item .icon-tile { width: 48px; height: 48px; margin: 0; border-radius: 14px; }
+.contact-item .icon-tile svg { width: 22px; height: 22px; }
+.contact-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 17px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.contact-text small { font-size: 13px; font-weight: 500; color: var(--muted); }
+.arrow {
+  font-size: 20px;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+.contact-item:hover .arrow { color: var(--accent); }
+
+/* Paydo bo'lish animatsiyalari (script.js ekranga kirganda .is-visible qo'shadi) */
+.js .reveal {
+  opacity: 0;
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.9s ease;
+  transition-delay: var(--d, 0s);
+}
+.js .fade-up { transform: translateY(32px); }
+.js .from-left { transform: translateX(-56px); }
+.js .from-right { transform: translateX(56px); }
+.js .zoom-in { transform: scale(0.94); }
+.js .blur-in { transform: translateY(16px); filter: blur(10px); }
+.js .reveal.is-visible { opacity: 1; transform: none; filter: none; }
+
+/* Ketma-ketlik (kechikishlar) */
+.hero-text > :nth-child(2) { --d: 0.1s; }
+.hero-text > :nth-child(3) { --d: 0.25s; }
+.hero-text > :nth-child(4) { --d: 0.4s; }
+.hero-text > :nth-child(5) { --d: 0.5s; }
+.hero-visual { --d: 0.3s; }
+.grid > :nth-child(2) { --d: 0.15s; }
+.grid > :nth-child(3) { --d: 0.3s; }
+.contact-list > :nth-child(1) { --d: 0.25s; }
+.contact-list > :nth-child(2) { --d: 0.35s; }
+.contact-list > :nth-child(3) { --d: 0.45s; }
+.contact-list > :nth-child(4) { --d: 0.55s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
+/* Footer */
+.footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero { padding: 56px 0 104px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+  .hero-visual { max-width: 400px; margin: 0 auto; }
+  .float-top { left: -24px; }
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .contact-card { grid-template-columns: 1fr; gap: 40px; padding: 48px; }
+}
+
+@media (max-width: 520px) {
+  .container { padding: 0 16px; }
+  .nav-links { gap: 16px; }
+  .nav-right { gap: 16px; }
+  .nav-links a { font-size: 14px; }
+  .hero { padding: 40px 0 88px; }
+  .lead { font-size: 17px; }
+  .hero-actions .btn { flex: 1 1 100%; }
+  .float { padding: 10px 14px 10px 10px; border-radius: 14px; }
+  .float strong { font-size: 18px; }
+  .float .icon-tile { width: 36px; height: 36px; border-radius: 10px; }
+  .float .icon-tile svg { width: 18px; height: 18px; }
+  .float-top { top: 48px; left: -8px; }
+  .float-right { right: 0; }
+  .float-bottom { left: 16px; bottom: -28px; }
+  .section { padding: 72px 0; }
+  .section-head { margin-bottom: 40px; }
+  .section-sub { font-size: 16px; }
+  .card { padding: 28px 24px; }
+  .card-lg { padding: 32px 24px; }
+  .card-lg h3 { font-size: 22px; }
+  .checklist li { font-size: 16px; }
+  .contact-card { padding: 32px 20px; border-radius: 28px; }
+  .contact-intro .btn { width: 100%; }
+  .contact-item { padding: 12px 14px 12px 12px; gap: 12px; }
+  .contact-text { font-size: 15px; }
+  .contact-item .arrow { display: none; }
+}
+
+@media (max-width: 460px) {
+  .nav-links { display: none; }
+}
+
+@media (max-width: 380px) {
+  .contact-card { padding: 28px 16px; }
+  .contact-item .icon-tile { width: 40px; height: 40px; border-radius: 12px; }
+  .contact-text { font-size: 14px; }
+}
