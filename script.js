@@ -10,6 +10,10 @@ function saveTheme(theme) {
 }
 function applyTheme(theme) {
   root.dataset.theme = theme;
+  // Telefon brauzerining yuqori paneli rangi ham tanlangan rejimga mos bo'lsin
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+    m.content = theme === "dark" ? "#17130f" : "#f5efe6";
+  });
   const btn = document.querySelector(".theme-toggle");
   if (btn) {
     const label = theme === "dark" ? "Kunduzgi rejimga o'tish" : "Tungi rejimga o'tish";
@@ -45,6 +49,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const hidePhoto = () => photo.remove();
   if (photo.complete && photo.naturalWidth === 0) hidePhoto();
   else photo.addEventListener("error", hidePhoto);
+
+  // Menyu: scroll qilinganda soya
+  const nav = document.querySelector(".nav");
+  const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 8);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Telefon menyusi (☰): ochish/yopish
+  const menuBtn = document.querySelector(".menu-toggle");
+  const setMenu = (open) => {
+    nav.classList.toggle("is-open", open);
+    menuBtn.setAttribute("aria-expanded", open);
+    menuBtn.setAttribute("aria-label", open ? "Menyuni yopish" : "Menyuni ochish");
+  };
+  menuBtn.addEventListener("click", () => setMenu(!nav.classList.contains("is-open")));
+  document.querySelectorAll(".nav-links a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  document.addEventListener("click", (e) => { if (!nav.contains(e.target)) setMenu(false); });
+
+  // Menyuda hozirgi bo'limni belgilash
+  const navLinks = [...document.querySelectorAll(".nav-links a")];
+  const markActive = (id) => navLinks.forEach((a) => {
+    const active = a.getAttribute("href") === "#" + id;
+    a.classList.toggle("is-active", active);
+    if (active) a.setAttribute("aria-current", "location");
+    else a.removeAttribute("aria-current");
+  });
+  if ("IntersectionObserver" in window) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) markActive(entry.target.id); });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    // Hero'da id yo'q — u ko'ringanda hech bir havola belgilanmaydi
+    document.querySelectorAll(".hero, section[id]").forEach((s) => sectionObserver.observe(s));
+  }
 
   // Bo'limlar ekranga kirganda paydo bo'lish animatsiyasi
   const revealItems = document.querySelectorAll(".reveal");

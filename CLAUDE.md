@@ -2,8 +2,8 @@
 
 ## Loyiha
 - Bir sahifali shaxsiy sayt: Flutter/Android dasturchi va o'qituvchi. O'quvchilar, ota-onalar va buyurtmachilar uchun.
-- Bo'limlar: Hero → Men haqimda → Xizmatlar → Aloqa. Matnlar o'zbek tilida (lotin).
-- Faktlar: 3+ yil tajriba, bakalavr, **1 ta** darslik kitob muallifi. Yangi faktni o'zing to'qima — so'ra.
+- Bo'limlar: Hero → Men haqimda → Xizmatlar → Savol-javob → Aloqa. "Mijozlar fikri" kerak emas. Matnlar o'zbek tilida (lotin).
+- Faktlar: 3+ yil tajriba, bakalavr, **1 ta** darslik kitob muallifi; darslar oflayn, yakka tartibda, 12 yoshdan. Yangi faktni o'zing to'qima — so'ra.
 
 ## Uslub
 - Taassurot: professional, minimalistik, ta'limga oid. Ohang: samimiy, qisqa, "men" tilida.
