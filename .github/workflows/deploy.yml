@@ -1,0 +1,48 @@
+# main'ga push bo'lganda saytni Hetzner serverga yuboradi
+name: Serverga deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - style.css
+      - script.js
+      - images/**
+      - .github/workflows/deploy.yml
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Repo'ni olish
+        uses: actions/checkout@v4
+
+      - name: SSH sozlash
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ vars.SSH_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Fayllarni serverga yuborish
+        run: |
+          rsync -rlvz --checksum --delete --chmod=D755,F644 \
+            -e "ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            index.html style.css script.js images \
+            shaxzodbek@2.29.103.133:
+
+      - name: Sayt ochilishini tekshirish
+        run: curl -fsS -o /dev/null -w "HTTP %{http_code}\n" https://shaxzodbekbaxtiyorov.uz/
