@@ -37,6 +37,20 @@ jobs:
           chmod 600 ~/.ssh/id_deploy
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
+      # Cloudflare CSS/JS'ni 7 kun keshlaydi. Fayl mazmunidan olingan kodni
+      # havolaga qo'shamiz (style.css?v=a1b2c3d4): fayl o'zgarsa — manzil ham
+      # o'zgaradi va hamma darhol yangi versiyani oladi. HTML keshlanmaydi.
+      - name: CSS/JS havolalariga versiya qo'shish
+        run: |
+          CSS_V=$(sha256sum style.css | cut -c1-8)
+          JS_V=$(sha256sum script.js | cut -c1-8)
+          sed -i -E \
+            -e "s#href=\"style\.css(\?v=[^\"]*)?\"#href=\"style.css?v=${CSS_V}\"#" \
+            -e "s#src=\"script\.js(\?v=[^\"]*)?\"#src=\"script.js?v=${JS_V}\"#" \
+            index.html
+          grep -nE 'style\.css|script\.js' index.html
+          echo "CSS_V=${CSS_V}" >> "$GITHUB_ENV"
+
       - name: Fayllarni serverga yuborish
         run: |
           rsync -rlvz --checksum --delete --chmod=D755,F644 \
@@ -45,4 +59,10 @@ jobs:
             shaxzodbek@2.29.103.133:
 
       - name: Sayt ochilishini tekshirish
-        run: curl -fsS -o /dev/null -w "HTTP %{http_code}\n" https://shaxzodbekbaxtiyorov.uz/
+        run: |
+          curl -fsS -o /dev/null -w "HTTP %{http_code}\n" https://shaxzodbekbaxtiyorov.uz/
+          # Sahifa (Cloudflare orqali) yangi CSS manzilini ko'rsatayaptimi?
+          curl -fsS https://shaxzodbekbaxtiyorov.uz/ | grep -q "style.css?v=${CSS_V}"
+          # Shu manzildagi CSS aynan repo'dagi fayl bilan bir xilmi?
+          test "$(curl -fsS "https://shaxzodbekbaxtiyorov.uz/style.css?v=${CSS_V}" | sha256sum | cut -c1-8)" = "${CSS_V}"
+          echo "Cloudflare yangi CSS'ni beryapti (v=${CSS_V})"
