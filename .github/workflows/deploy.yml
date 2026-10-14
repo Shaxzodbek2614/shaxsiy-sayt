@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Repo'ni olish
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: SSH sozlash
         env:
